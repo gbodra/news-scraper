@@ -15,4 +15,6 @@ const (
 	TechCrunch   = "TechCrunch"
 	TheVerge     = "TheVerge"
 	HBR          = "HBR"
+	Investing    = "Investing"
+	Bloomberg    = "Bloomberg"
 )

@@ -25,6 +25,10 @@ func Scraper(sender *tb.User, bot *tb.Bot, properties models.ScraperProperties) 
 				HBRSearch(e, &properties)
 			case models.TheVerge:
 				TheVergeSearch(e, &properties)
+			case models.Investing:
+				InvestingSearch(e, &properties)
+			case models.Bloomberg:
+				BloombergSearch(e, &properties)
 			}
 		}
 
