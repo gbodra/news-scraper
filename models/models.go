@@ -11,10 +11,11 @@ type ScraperProperties struct {
 
 // Source types
 const (
-	Enterprisers = "Enterprisers"
-	TechCrunch   = "TechCrunch"
-	TheVerge     = "TheVerge"
-	HBR          = "HBR"
-	Investing    = "Investing"
-	Bloomberg    = "Bloomberg"
+	Enterprisers   = "Enterprisers"
+	TechCrunch     = "TechCrunch"
+	TheVerge       = "TheVerge"
+	HBR            = "HBR"
+	Investing      = "Investing"
+	Bloomberg      = "Bloomberg"
+	FinancialTimes = "FinancialTimes"
 )

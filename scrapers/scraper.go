@@ -29,6 +29,8 @@ func Scraper(sender *tb.User, bot *tb.Bot, properties models.ScraperProperties) 
 				InvestingSearch(e, &properties)
 			case models.Bloomberg:
 				BloombergSearch(e, &properties)
+			case models.FinancialTimes:
+				FinancialTimesSearch(e, &properties)
 			}
 		}
 

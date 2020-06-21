@@ -1,8 +1,6 @@
 package scrapers
 
 import (
-	"log"
-
 	"github.com/gbodra/news-scraper/models"
 	"github.com/gocolly/colly"
 )
@@ -13,5 +11,4 @@ func BloombergSearch(e *colly.HTMLElement, properties *models.ScraperProperties)
 	title := e.Text
 
 	properties.Message = properties.Message + "- <a href=\"" + titleURL + "\">" + title + "</a>\n\n"
-	log.Println(properties.Message)
 }

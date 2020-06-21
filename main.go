@@ -28,7 +28,7 @@ func main() {
 	}
 
 	b.Handle("/hello", func(m *tb.Message) {
-		b.Send(m.Sender, "Hello I'm Vince Vega and I'll help you to stay updated on the latest tech news")
+		b.Send(m.Sender, "Hello I'm Vince Vega and I'll help you to stay updated on the latest news")
 	})
 
 	var enterprisersProperties models.ScraperProperties
@@ -65,11 +65,17 @@ func main() {
 	investingProperties.Source = models.Investing
 
 	var bloombergProperties models.ScraperProperties
-	// bloombergProperties.Domain = "br.investing.com"
 	bloombergProperties.Message = "<b><u>Bloomberg</u></b>\n\n"
 	bloombergProperties.BaseURL = "https://www.bloomberg.com.br/blog/category/noticias-exclusivas/"
 	bloombergProperties.SearchPath = "a[data-element=blog-post]"
 	bloombergProperties.Source = models.Bloomberg
+
+	var financialTimesProperties models.ScraperProperties
+	financialTimesProperties.Domain = "www.ft.com"
+	financialTimesProperties.Message = "<b><u>Financial Times</u></b>\n\n"
+	financialTimesProperties.BaseURL = "https://www.ft.com/technology"
+	financialTimesProperties.SearchPath = "a[data-trackable=heading-link]"
+	financialTimesProperties.Source = models.FinancialTimes
 
 	b.Handle("/enterprisers", func(m *tb.Message) {
 		scrapers.Scraper(m.Sender, b, enterprisersProperties)
@@ -95,6 +101,10 @@ func main() {
 		scrapers.Scraper(m.Sender, b, bloombergProperties)
 	})
 
+	b.Handle("/ft", func(m *tb.Message) {
+		scrapers.Scraper(m.Sender, b, financialTimesProperties)
+	})
+
 	b.Handle("/allnews", func(m *tb.Message) {
 		scrapers.Scraper(m.Sender, b, enterprisersProperties)
 		scrapers.Scraper(m.Sender, b, techCrunchProperties)
@@ -102,6 +112,7 @@ func main() {
 		scrapers.Scraper(m.Sender, b, hbrProperties)
 		scrapers.Scraper(m.Sender, b, investingProperties)
 		scrapers.Scraper(m.Sender, b, bloombergProperties)
+		scrapers.Scraper(m.Sender, b, financialTimesProperties)
 	})
 
 	b.Start()
