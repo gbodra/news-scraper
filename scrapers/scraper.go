@@ -5,11 +5,13 @@ import (
 
 	"github.com/gbodra/news-scraper/models"
 	"github.com/gocolly/colly"
-	tb "gopkg.in/tucnak/telebot.v2"
+
+	// tb "gopkg.in/tucnak/telebot.v2"
+	tb "gopkg.in/telebot.v3"
 )
 
 // Scraper genereic scraper
-func Scraper(sender *tb.User, bot *tb.Bot, properties models.ScraperProperties) {
+func Scraper(botContext tb.Context, properties models.ScraperProperties) {
 	i := 0
 
 	c := colly.NewCollector()
@@ -38,7 +40,7 @@ func Scraper(sender *tb.User, bot *tb.Bot, properties models.ScraperProperties) 
 	})
 
 	c.OnScraped(func(r *colly.Response) {
-		bot.Send(sender, properties.Message, &tb.SendOptions{
+		botContext.Send(properties.Message, &tb.SendOptions{
 			DisableWebPagePreview: true,
 			ParseMode:             tb.ModeHTML,
 		})

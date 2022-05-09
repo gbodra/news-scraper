@@ -8,7 +8,9 @@ import (
 	"github.com/gbodra/news-scraper/models"
 	"github.com/gbodra/news-scraper/scrapers"
 	"github.com/joho/godotenv"
-	tb "gopkg.in/tucnak/telebot.v2"
+
+	// tb "gopkg.in/tucnak/telebot.v2"
+	tb "gopkg.in/telebot.v3"
 )
 
 func main() {
@@ -27,15 +29,15 @@ func main() {
 		return
 	}
 
-	b.Handle("/hello", func(m *tb.Message) {
-		b.Send(m.Sender, "Hello I'm Vince Vega and I'll help you to stay updated on the latest news")
+	b.Handle("/hello", func(botContext tb.Context) error {
+		return botContext.Send("Hello I'm Vince Vega and I'll help you to stay updated on the latest news")
 	})
 
 	var enterprisersProperties models.ScraperProperties
 	enterprisersProperties.Domain = "enterprisersproject.com"
 	enterprisersProperties.Message = "<b><u>The Enterprisers Project</u></b>\n\n"
 	enterprisersProperties.BaseURL = "https://enterprisersproject.com/"
-	enterprisersProperties.SearchPath = "div.node-article > h2"
+	enterprisersProperties.SearchPath = "div.teaser__content > h2"
 	enterprisersProperties.Source = models.Enterprisers
 
 	var techCrunchProperties models.ScraperProperties
@@ -54,7 +56,7 @@ func main() {
 	hbrProperties.Domain = "https://hbr.org"
 	hbrProperties.Message = "<b><u>HBR</u></b>\n\n"
 	hbrProperties.BaseURL = "https://hbr.org/topic/innovation"
-	hbrProperties.SearchPath = ".hed > a"
+	hbrProperties.SearchPath = "h3.hed > a"
 	hbrProperties.Source = models.HBR
 
 	var investingProperties models.ScraperProperties
@@ -77,42 +79,56 @@ func main() {
 	financialTimesProperties.SearchPath = "a[data-trackable=heading-link]"
 	financialTimesProperties.Source = models.FinancialTimes
 
-	b.Handle("/enterprisers", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, enterprisersProperties)
+	b.Handle("/enterprisers", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, enterprisersProperties)
+		return nil
 	})
 
-	b.Handle("/techcrunch", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, techCrunchProperties)
+	b.Handle("/techcrunch", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, techCrunchProperties)
+		return nil
 	})
 
-	b.Handle("/theverge", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, theVergeProperties)
+	b.Handle("/theverge", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, theVergeProperties)
+		return nil
 	})
 
-	b.Handle("/hbr", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, hbrProperties)
+	b.Handle("/hbr", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, hbrProperties)
+		return nil
 	})
 
-	b.Handle("/investing", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, investingProperties)
+	b.Handle("/investing", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, investingProperties)
+		return nil
 	})
 
-	b.Handle("/bloomberg", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, bloombergProperties)
+	b.Handle("/bloomberg", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, bloombergProperties)
+		return nil
 	})
 
-	b.Handle("/ft", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, financialTimesProperties)
+	b.Handle("/ft", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, financialTimesProperties)
+		return nil
 	})
 
-	b.Handle("/allnews", func(m *tb.Message) {
-		scrapers.Scraper(m.Sender, b, enterprisersProperties)
-		scrapers.Scraper(m.Sender, b, techCrunchProperties)
-		scrapers.Scraper(m.Sender, b, theVergeProperties)
-		scrapers.Scraper(m.Sender, b, hbrProperties)
-		scrapers.Scraper(m.Sender, b, investingProperties)
-		scrapers.Scraper(m.Sender, b, bloombergProperties)
-		scrapers.Scraper(m.Sender, b, financialTimesProperties)
+	b.Handle("/allnews", func(botContext tb.Context) error {
+		scrapers.Scraper(botContext, enterprisersProperties)
+		scrapers.Scraper(botContext, techCrunchProperties)
+		scrapers.Scraper(botContext, theVergeProperties)
+		scrapers.Scraper(botContext, hbrProperties)
+		scrapers.Scraper(botContext, investingProperties)
+		scrapers.Scraper(botContext, bloombergProperties)
+		scrapers.Scraper(botContext, financialTimesProperties)
+		return nil
+	})
+
+	b.Handle(tb.OnChannelPost, func(c tb.Context) error {
+		// Channel posts only.
+		// msg := c.Message()
+		return c.Send("Test")
 	})
 
 	b.Start()

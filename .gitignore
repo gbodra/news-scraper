@@ -17,3 +17,8 @@
 news-scraper-*
 
 .env
+
+*.code-workspace
+.vscode/
+launch.json
+__debug_bin
